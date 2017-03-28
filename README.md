@@ -37,12 +37,13 @@ API endpoints are as follows:
 ## Missing config
 
 In the event that you'd like to run this thing yourself, it is necessary to add
-a file *config.py* to the *bin* directory.  *config.py* must set a db_url
-variable to a SQLAlchemy database url, and should set a test_db_url to another
+a file *config.py* to the *bin* directory.  *config.py* must set read_db_url
+and write_db_url variables to SQLAlchemy database urls, and should set a test_db_url to another
 one set aside for unittests.  Example:
 
     test_db_url="mysql://tester:test_password@example.com/unittest"
-    db_url="postgresql://production:prod_password@example.com/real"
+    read_db_url="postgresql://readonly_user:password@example.com/real"
+    write_db_url="postgresql://full_user:password@example.com/real"
 
 Yes, relying on file-system security is sub-optimal.  I'm happy to learn better
 methods. For now the excuse is that this thing only hosts data that is already

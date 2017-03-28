@@ -5,16 +5,28 @@ from flask import Flask, jsonify, render_template
 from jailjawn import Census, Facility
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-import config
+from config import read_db_url
 
 app = Flask(__name__)
+
+def format_census(c):
+    date = c.date.isoformat()
+    return {
+        'date': date,
+        'juvenile_male': c.juvenile_male,
+        'juvenile_female': c.juvenile_female,
+        'total': c.juvenile_male + c.juvenile_female}
+
+def connect():
+    engine = create_engine(read_db_url)
+    Session = sessionmaker(bind=engine)
+    session = Session()
+    return session
 
 @app.route('/', methods=['GET'])
 def home():
 
-    engine = create_engine(config.db_url)
-    Session = sessionmaker(bind=engine)
-    session = Session()
+    session = connect()
 
     c = session.query(Census)\
         .join(Facility)\
@@ -46,9 +58,7 @@ id="total">%s</span> youth in Philadelphia adult jails.</p>
 @app.route('/history', methods=['GET'])
 def history():
 
-    engine = create_engine(config.db_url)
-    Session = sessionmaker(bind=engine)
-    session = Session()
+    session = connect()
 
     census_data = session.query(Census)\
         .join(Facility)\
@@ -67,20 +77,10 @@ collecting the original census data.</p>'''
         census=counts,
         body=body)
 
-def format_census(c):
-    date = c.date.isoformat()
-    return {
-        'date': date,
-        'juvenile_male': c.juvenile_male,
-        'juvenile_female': c.juvenile_female,
-        'total': c.juvenile_male + c.juvenile_female}
-
 @app.route('/api/census', methods=['GET'])
 def census():
 
-    engine = create_engine(config.db_url)
-    Session = sessionmaker(bind=engine)
-    session = Session()
+    session = connect()
 
     census_data = session.query(Census)\
         .join(Facility)\
@@ -96,9 +96,7 @@ def census():
 
 @app.route('/api/census/latest', methods=['GET'])
 def latest():
-    engine = create_engine(config.db_url)
-    Session = sessionmaker(bind=engine)
-    session = Session()
+    session = connect()
 
     c = session.query(Census)\
         .join(Facility)\
@@ -111,9 +109,7 @@ def latest():
 
 @app.route('/api/census/<string:day>')
 def census_from(day):
-    engine = create_engine(config.db_url)
-    Session = sessionmaker(bind=engine)
-    session = Session()
+    session = connect()
 
     error = {'error': 'invalid date'}
 

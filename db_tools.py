@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from sqlalchemy import create_engine
-from jailjawn import Base
+from jailjawn import Base, Census, Facility
 
 
 def create(url):

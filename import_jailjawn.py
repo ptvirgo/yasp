@@ -4,7 +4,7 @@ from dateutil.parser import parse
 from jailjawn import Census, Facility
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-import config
+from config import write_db_url
 import re
 import requests
 
@@ -91,7 +91,7 @@ class JailJawnImporter(object):
         return count
 
 if __name__ == "__main__":
-    engine = create_engine(config.db_url)
+    engine = create_engine(write_db_url)
     Session = sessionmaker(bind=engine)
     session = Session()
     jj = JailJawnImporter(session)
