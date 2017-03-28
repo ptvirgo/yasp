@@ -28,6 +28,7 @@ def home():
     body = str(
         '''<p>As of <span id="date">%s</span>, there are <span
 id="total">%s</span> youth in Philadelphia adults jails.</p>
+<div id="comic"></div>
 <p><a href="http://www.yasproject.com/">YASP</a> is working to change that.</p>
         ''' % (d['date'], d['total']))
 
@@ -37,7 +38,7 @@ id="total">%s</span> youth in Philadelphia adults jails.</p>
         '/static/js/yasp_animation.js'
     ]
 
-    return render_template('comic.html',
+    return render_template('default.html',
         title="What's wrong with this picture?",
         body=body,
         scripts=scripts)
