@@ -27,7 +27,7 @@ def home():
 
     body = str(
         '''<p>As of <span id="date">%s</span>, there are <span
-id="total">%s</span> juveniles in Philadelphia adults prisons.</p>
+id="total">%s</span> youth in Philadelphia adults jails.</p>
 <p><a href="http://www.yasproject.com/">YASP</a> is working to change that.</p>
         ''' % (d['date'], d['total']))
 
@@ -62,7 +62,7 @@ def history():
 collecting the original census data.</p>'''
 
     return render_template('history.html',
-        title='Juveniles in Philadelphia adult prisons; historical census',
+        title='Historical Census',
         census=counts,
         body=body)
 
