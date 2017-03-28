@@ -1,0 +1,24 @@
+{% extends "default.html" %}
+{% block body %}
+{{ body|safe }}
+<table>
+<thead>
+<tr>
+    <th>Date</th>
+    <th>Males</th>
+    <th>Females</th>
+    <th>Total</th>
+</tr>
+</thead>
+<tbody>
+{% for c in census %}
+<tr class="{{ loop.cycle('odd', 'even') }}">
+    <td>{{ c.date }}</td>
+    <td>{{ c.juvenile_male }}</td>
+    <td>{{ c.juvenile_female }}</td>
+    <td>{{ c.total }}</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+{% endblock %}

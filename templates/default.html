@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}<h1>{{ title }}</h1>{% endblock %}
+
+{% block body %}{{ body|safe }}{% endblock %}
+
+{% block scripts %}
+
+{% for s in scripts %}
+<script type="text/javascript" src="{{ s }}"></script>
+{% endfor %}
+
+{% endblock %}

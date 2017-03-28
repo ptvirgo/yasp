@@ -1,0 +1,47 @@
+html {
+    background-color: white;
+    color: black;
+    font-family: 'Amaranth';
+    font-size: 13pt;
+    text-align: center;
+}
+
+h1, h2, h3, h4, h5, h6, p {
+    margin: 0 0 1em 0;
+}
+
+h1 {
+    font-size: 24pt;
+}
+
+a {
+    color: #003380;
+}
+
+a:visited {
+    color: #f60;
+}
+
+a:hover {
+    color: #800000;
+}
+
+img#comic {
+    margin: 0 auto 0 auto;
+}
+
+table {
+    margin: 1em auto;
+}
+
+tr.odd {
+    background-color: #eef;
+}
+
+tr.even {
+    background-color: #fee;
+}
+
+span#date, span#total {
+    font-weight: bold;
+}
