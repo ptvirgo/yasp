@@ -9,6 +9,7 @@ from config import read_db_url
 
 app = Flask(__name__)
 
+
 def format_census(c):
     date = c.date.isoformat()
     return {
@@ -17,11 +18,13 @@ def format_census(c):
         'juvenile_female': c.juvenile_female,
         'total': c.juvenile_male + c.juvenile_female}
 
+
 def connect():
     engine = create_engine(read_db_url)
     Session = sessionmaker(bind=engine)
     session = Session()
     return session
+
 
 @app.route('/', methods=['GET'])
 def home():
@@ -30,7 +33,7 @@ def home():
 
     c = session.query(Census)\
         .join(Facility)\
-        .filter(Facility.name=='PDP "In Facility" Count')\
+        .filter(Facility.name == 'PDP "In Facility" Count')\
         .order_by(Census.date.desc())\
         .limit(1)\
         .one()
@@ -50,10 +53,12 @@ id="total">%s</span> youth in Philadelphia adult jails.</p>
         '/static/js/yasp_animation.js'
     ]
 
-    return render_template('default.html',
+    return render_template(
+        'default.html',
         title="What's wrong with this picture?",
         body=body,
         scripts=scripts)
+
 
 @app.route('/history', methods=['GET'])
 def history():
@@ -62,20 +67,24 @@ def history():
 
     census_data = session.query(Census)\
         .join(Facility)\
-        .filter(Facility.name=='PDP "In Facility" Count')\
+        .filter(Facility.name == 'PDP "In Facility" Count')\
         .order_by(Census.date.desc())
 
     counts = []
     for c in census_data:
         counts.append(format_census(c))
 
-    body='''<p>Thanks to <a href="https://jailjawn.github.io/">JailJawn</a> for
-collecting the original census data.</p>'''
+    body = '''
+      <p>Thanks to <a href="https://jailjawn.github.io/">JailJawn</a> for
+      collecting the original census data.</p>
+    '''
 
-    return render_template('history.html',
+    return render_template(
+        'history.html',
         title='Historical Census',
         census=counts,
         body=body)
+
 
 @app.route('/api/census', methods=['GET'])
 def census():
@@ -84,7 +93,7 @@ def census():
 
     census_data = session.query(Census)\
         .join(Facility)\
-        .filter(Facility.name=='PDP "In Facility" Count')\
+        .filter(Facility.name == 'PDP "In Facility" Count')\
         .order_by(Census.date.desc())
 
     counts = []
@@ -94,18 +103,20 @@ def census():
 
     return jsonify(counts)
 
+
 @app.route('/api/census/latest', methods=['GET'])
 def latest():
     session = connect()
 
     c = session.query(Census)\
         .join(Facility)\
-        .filter(Facility.name=='PDP "In Facility" Count')\
+        .filter(Facility.name == 'PDP "In Facility" Count')\
         .order_by(Census.date.desc())\
         .limit(1)\
         .one()
 
     return jsonify(format_census(c))
+
 
 @app.route('/api/census/<string:day>')
 def census_from(day):
@@ -115,18 +126,19 @@ def census_from(day):
 
     try:
         date = parse(day)
-    except:
+    except ValueError as error:
         return (jsonify(error), 400)
 
     try:
         c = session.query(Census)\
             .join(Facility)\
-            .filter(Census.date==date)\
-            .filter(Facility.name=='PDP "In Facility" Count')\
+            .filter(Census.date == date)\
+            .filter(Facility.name == 'PDP "In Facility" Count')\
             .one()
         return jsonify(format_census(c))
-    except:
+    except Exception as error:
         return (jsonify(error), 400)
+
 
 if __name__ == '__main__':
     app.run()

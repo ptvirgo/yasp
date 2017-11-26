@@ -4,12 +4,13 @@ from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
 
+
 class Census(Base):
     __tablename__ = 'census'
     id = Column(Integer, primary_key=True)
     date = Column(Date, index=True)
     facility_id = Column(SmallInteger, ForeignKey('facility.id'))
-    facility = relationship('Facility', back_populates='reports')   
+    facility = relationship('Facility', back_populates='reports')
     adult_female = Column(SmallInteger)
     adult_male = Column(SmallInteger)
     emergency_room_trip_female = Column(SmallInteger)
@@ -29,7 +30,7 @@ class Census(Base):
     def __repr__(self):
         return '<Census:(date=' + str(self.date) + ', facility=' \
              + str(self.facility) + ')>'
-        
+
 
 class Facility(Base):
     __tablename__ = 'facility'

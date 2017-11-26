@@ -8,6 +8,7 @@ def create(url):
     engine = create_engine(url)
     Base.metadata.create_all(engine)
 
+
 def destroy(url):
     engine = create_engine(url)
     Census.__table__.drop(engine)

@@ -8,6 +8,7 @@ from config import write_db_url
 import re
 import requests
 
+
 class JailJawnImporter(object):
 
     def __init__(self, session):
@@ -18,7 +19,7 @@ class JailJawnImporter(object):
 
     def facility_name(self, text):
         '''Clean facility names'''
-        unspaced = re.sub('[\s]+', ' ', text.strip()) 
+        unspaced = re.sub('[\s]+', ' ', text.strip())
         return unspaced
 
     def dict2census(self, date, data):
@@ -41,23 +42,23 @@ class JailJawnImporter(object):
             raise ValueError('Duplicate census entry ' + str(census))
 
         census = Census(
-            facility = facility,
-            date = date,
-            adult_female = data.get('Adult Female'),
-            adult_male = data.get('Adult Male'),
-            emergency_room_trip_female = data.get('Emergency Room Trip Female'),
-            emergency_room_trip_male = data.get('Emergency Room Trip Male'),
-            furlough_female = data.get('Furlough Female'),
-            furlough_male = data.get('Furlough Male'),
-            in_out_female = data.get('In Out Female'),
-            in_out_male = data.get('In Out Male'),
-            juvenile_female = data.get('Juvenile Female'),
-            juvenile_male = data.get('Juvenile Male'),
-            open_ward_female = data.get('Open Ward Female'),
-            open_ward_male = data.get('Open Ward Male'),
-            total_count = data.get('Total Count'),
-            worker_female = data.get('Worker Female'),
-            worker_male = data.get('Worker Male')
+            facility=facility,
+            date=date,
+            adult_female=data.get('Adult Female'),
+            adult_male=data.get('Adult Male'),
+            emergency_room_trip_female=data.get('Emergency Room Trip Female'),
+            emergency_room_trip_male=data.get('Emergency Room Trip Male'),
+            furlough_female=data.get('Furlough Female'),
+            furlough_male=data.get('Furlough Male'),
+            in_out_female=data.get('In Out Female'),
+            in_out_male=data.get('In Out Male'),
+            juvenile_female=data.get('Juvenile Female'),
+            juvenile_male=data.get('Juvenile Male'),
+            open_ward_female=data.get('Open Ward Female'),
+            open_ward_male=data.get('Open Ward Male'),
+            total_count=data.get('Total Count'),
+            worker_female=data.get('Worker Female'),
+            worker_male=data.get('Worker Male')
         )
         self.session.add(census)
         self.session.commit()
@@ -74,7 +75,8 @@ class JailJawnImporter(object):
         r = requests.get(self.jailjawn_url)
 
         if r.status_code != 200:
-            raise ConnectionError('Could not reach ' + self.jailjawn_url)
+            raise requests.exceptions.ConnectionError(
+              'Could not reach ' + self.jailjawn_url)
 
         count = 0
         jsr = r.json()
@@ -89,6 +91,7 @@ class JailJawnImporter(object):
                     if census is not None:
                         count += 1
         return count
+
 
 if __name__ == "__main__":
     engine = create_engine(write_db_url)
