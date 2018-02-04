@@ -9,7 +9,7 @@ class Census(Base):
     __tablename__ = 'census'
     id = Column(Integer, primary_key=True)
     date = Column(Date, index=True)
-    facility_id = Column(SmallInteger, ForeignKey('facility.id'))
+    facility_id = Column(SmallInteger, ForeignKey('facility.id'), index=True)
     facility = relationship('Facility', back_populates='reports')
     adult_female = Column(SmallInteger)
     adult_male = Column(SmallInteger)

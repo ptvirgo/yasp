@@ -11,12 +11,12 @@ with open('LICENSE') as f:
 
 setup(
     name='Yasp',
-    version='0.0.1',
+    version='0.0.2',
     description='YASP data collection tools',
     long_description=readme,
     author='Pablo Virgo',
     author_email='mailbox@pablovirgo.com',
     url='https://github.com/ptvirgo/yasp',
     license=license,
-    packages=find_packages(exclude=('tests', 'docs'))
+    packages=['census']
 )
