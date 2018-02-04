@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Date, Integer, String, SmallInteger, ForeignKey
+from sqlalchemy import Column, Date, Integer, String, SmallInteger, ForeignKey, UniqueConstraint
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
 
@@ -6,8 +6,13 @@ Base = declarative_base()
 
 
 class Census(Base):
+
     __tablename__ = 'census'
-    id = Column(Integer, primary_key=True)
+    __table_args__ = (UniqueConstraint('facility_id', 'date',
+                      name='daily_census_constraint'),
+                     )
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
     date = Column(Date, index=True)
     facility_id = Column(SmallInteger, ForeignKey('facility.id'), index=True)
     facility = relationship('Facility', back_populates='reports')
@@ -34,7 +39,7 @@ class Census(Base):
 
 class Facility(Base):
     __tablename__ = 'facility'
-    id = Column(SmallInteger, primary_key=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String(128), index=True, unique=True)
     reports = relationship('Census', back_populates='facility')
 

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from setuptools import setup, find_packages
+from setuptools import setup
 
 
 with open('README.md') as f:
@@ -11,12 +11,12 @@ with open('LICENSE') as f:
 
 setup(
     name='Yasp',
-    version='0.0.2',
+    version='1.0.0',
     description='YASP data collection tools',
     long_description=readme,
     author='Pablo Virgo',
     author_email='mailbox@pablovirgo.com',
     url='https://github.com/ptvirgo/yasp',
     license=license,
-    packages=['census']
+    packages=['census', 'pdp_scraper', 'webapp']
 )

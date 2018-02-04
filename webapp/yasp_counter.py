@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
+import os
 
 from dateutil.parser import parse
 from flask import Flask, jsonify, render_template
-from jailjawn import Census, Facility
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from config import read_db_url
+
+from census import Census, Facility
 
 app = Flask(__name__)
 
@@ -20,7 +21,7 @@ def format_census(c):
 
 
 def connect():
-    engine = create_engine(read_db_url)
+    engine = create_engine(os.environ['CENSUS_DB'])
     Session = sessionmaker(bind=engine)
     session = Session()
     return session
@@ -125,19 +126,24 @@ def census_from(day):
     error = {'error': 'invalid date'}
 
     try:
-        date = parse(day)
+        date = parse(day).date()
     except ValueError as error:
         return (jsonify(error), 400)
 
     try:
         c = session.query(Census)\
             .join(Facility)\
-            .filter(Census.date == date)\
-            .filter(Facility.name == 'PDP "In Facility" Count')\
-            .one()
-        return jsonify(format_census(c))
+            .filter(Census.date==date)\
+            .filter(Facility.name=='PDP "In Facility" Count')\
+            .one_or_none()
+
     except Exception as error:
         return (jsonify(error), 400)
+
+    if c is None:
+        return (jsonify(error), 400)
+
+    return jsonify(format_census(c))
 
 
 if __name__ == '__main__':

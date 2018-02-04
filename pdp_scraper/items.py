@@ -13,6 +13,22 @@ class CensusItem(scrapy.Item):
     date.
     '''
 
+    ordered_fields = ['adult_male',
+                      'adult_female',
+                      'juvenile_male',
+                      'juvenile_female',
+                      'in_out_male',
+                      'in_out_female',
+                      'worker_male',
+                      'worker_female',
+                      'furlough_male',
+                      'furlough_female', 
+                      'open_ward_male', 
+                      'open_ward_female', 
+                      'emergency_room_trip_male', 
+                      'emergency_room_trip_female' 
+                     ]
+
     date = scrapy.Field()
     facility = scrapy.Field(serializer=str)
     adult_female = scrapy.Field(serializer=int)

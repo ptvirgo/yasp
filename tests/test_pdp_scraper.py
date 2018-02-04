@@ -14,7 +14,6 @@ class TestPDPScraper(unittest.TestCase):
 
     spider = CensusPageSpider()
 
-
     def test_dec_2017(self):
         '''Validate simple parsing of census from Dec, 2017'''
 
@@ -39,11 +38,12 @@ class TestPDPScraper(unittest.TestCase):
         self.assertEqual(pdp['juvenile_female'], 1)
 
     def test_facility_names(self):
-        '''All facilty names should load correctly'''    
+        '''All facilty names should load correctly'''
+
         facilities = ['ASD ASDCU', 'ASD Cambria', 'ASD Cannery', 'ASD MOD 3',
-                      'ASD WRP-UNIV. AVE', 'CFCF', 'DC-DETENTION CENTER', 'DC-PHSW',
-                      'HOC', 'PICC', 'RCF', 'Weekenders', 'PDP "In Facility" Count'
-                     ]
+                      'ASD WRP-UNIV. AVE', 'CFCF', 'DC-DETENTION CENTER',
+                      'DC-PHSW', 'HOC', 'PICC', 'RCF', 'Weekenders',
+                      'PDP "In Facility" Count']
 
         response = self.sample('2017-12-31.html')
         items = list(self.spider.parse(response))
@@ -83,8 +83,9 @@ class TestPDPScraper(unittest.TestCase):
         '''Make sure odd whitespace is cleared'''
 
         self.assertEqual(self.spider.clean_space('DC-PHSW'), 'DC-PHSW')
-        self.assertEqual(self.spider.clean_space(' ASD \n  \tCambria\t\n  '),
-                                                 'ASD Cambria')
+        self.assertEqual(
+            self.spider.clean_space(' ASD \n  \tCambria\t\n  '),
+            'ASD Cambria')
 
     def test_as_int(self):
         '''Make sure integers are handled'''

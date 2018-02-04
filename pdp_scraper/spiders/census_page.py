@@ -10,7 +10,7 @@ from ..items import CensusItem
 class CensusPageSpider(scrapy.Spider):
     name = 'census_page'
     allowed_domains = ['http://www.phila.gov']
-    start_urls = ['http://http://www.phila.gov/prisons/inmatesupport/Pages/Census.aspx']
+    start_urls = ['http://www.phila.gov/prisons/inmatesupport/Pages/Census.aspx']
 
     facilities = ['ASD ASDCU', 'ASD Cambria', 'ASD Cannery', 'ASD MOD 3',
                   'ASD WRP-UNIV. AVE', 'CFCF', 'DC-DETENTION CENTER', 'DC-PHSW',
@@ -41,24 +41,9 @@ class CensusPageSpider(scrapy.Spider):
                 facility=self.clean_space(data[0].xpath('text()').extract_first()),
                 date=dt)
 
-            ordered_fields = ['adult_male',
-                              'adult_female',
-                              'juvenile_male',
-                              'juvenile_female',
-                              'in_out_male',
-                              'in_out_female',
-                              'worker_male',
-                              'worker_female',
-                              'furlough_male',
-                              'furlough_female', 
-                              'open_ward_male', 
-                              'open_ward_female', 
-                              'emergency_room_trip_male', 
-                              'emergency_room_trip_female' 
-                             ]
-
-            for i in range(len(ordered_fields)):
-                census[ordered_fields[i]] = self.as_int(
+            for i in range(len(census.ordered_fields)):
+                field = census.ordered_fields[i]
+                census[field] = self.as_int(
                     data[i + 1].xpath('text()').extract_first())
 
             yield census   

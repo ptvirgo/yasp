@@ -10,10 +10,11 @@ libraries and techniques.
 
 ## Sources
 
-Data is collected from the [JailJawn](https://jailjawn.github.io/) [Code for
-Philly project](https://codeforphilly.org/), which in turn scrapes from the
-[Philadelphia prison system's](http://www.phila.gov/prisons/Pages/default.aspx)
-daily census.
+There is historical data collected from the
+[JailJawn](https://jailjawn.github.io/) [Code for Philly
+project](https://codeforphilly.org/).  Ongoing updates are collected directly
+from the [Philadelphia prison
+system's](http://www.phila.gov/prisons/Pages/default.aspx) daily census.
 
 ## API
 
@@ -34,19 +35,27 @@ API endpoints are as follows:
 - *api/census/[date]*: [date] must be a valid date for which a census has been
   taken.  Returns the count for the provided date, or an error.
 
-## Missing config
+## Configuration notes
 
-There are passwords in a config file.  In the event that you want to run this
-thing, you'll have to come up with your own.
+Export CENSUS_DB to a SQLAlchemy database url, such as
 
-Put *config.py* in the base directory. *config.py* must set read_db_url
-and write_db_url variables to SQLAlchemy database urls, and should set a test_db_url to another
-one set aside for unittests.  Example:
+```bash
+   export CENSUS_DB=postgresql://readonly_user:password@example.com/real
+```
 
-    test_db_url="mysql://tester:password@example.com/unittest"
-    read_db_url="postgresql://readonly_user:password@example.com/real"
-    write_db_url="postgresql://full_user:password@example.com/real"
+or
 
-Yes, relying on file-system security is sub-optimal.  I'm happy to learn better
-methods. For now the excuse is that this thing only hosts data that is already
-public. 
+```bash
+   export CENSUS_DB=sqlite3:////$HOME/dir/census.db
+```
+
+Prepare the database tables with an interactive shell:
+
+```python
+census.db_tools.create()
+```
+
+Capture the latest census data:
+```bash
+scrapy crawl census_page
+```

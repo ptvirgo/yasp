@@ -1,5 +1,5 @@
+scrapy
 flask
 python-dateutil
-mysql-python
 sqlalchemy
 requests
