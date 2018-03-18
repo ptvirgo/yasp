@@ -9,7 +9,7 @@ from ..items import CensusItem
 
 class CensusPageSpider(scrapy.Spider):
     name = 'census_page'
-    allowed_domains = ['http://www.phila.gov']
+    allowed_domains = ['www.phila.gov']
     start_urls = ['http://www.phila.gov/prisons/inmatesupport/Pages/Census.aspx']
 
     facilities = ['ASD ASDCU', 'ASD Cambria', 'ASD Cannery', 'ASD MOD 3',

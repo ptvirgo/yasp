@@ -3,3 +3,4 @@ flask
 python-dateutil
 sqlalchemy
 requests
+mysqlclient
